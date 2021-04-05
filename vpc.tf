@@ -24,6 +24,7 @@ resource "aws_internet_gateway" "main_igw" {
   }
 }
 
+// Subnets Public and Private
 resource "aws_subnet" "public_subnets" {
   count = local.az_number
 
