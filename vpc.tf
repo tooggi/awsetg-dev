@@ -81,6 +81,7 @@ resource "aws_route" "public_igw_route" {
   gateway_id = aws_internet_gateway.main_igw.id
 }
 
+// NAT config for Private Subnets
 resource "aws_eip" "nat_eip" {
   vpc = true
 
