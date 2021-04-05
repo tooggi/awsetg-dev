@@ -17,19 +17,13 @@ resource "aws_vpc" "main_vpc" {
   }
 }
 
-resource "aws_subnet" "public_subnet_a" {
-  cidr_block = cidrsubnet(var.vpc_cidr, 4, 0)
-  vpc_id = aws_vpc.main_vpc.id
-  tags = {
-    Name = "${var.prefix}-Public-Subnet-A"
-  }
-}
-
 resource "aws_subnet" "public_subnets" {
   count = local.az_number
 
   cidr_block = cidrsubnet(var.vpc_cidr, 4, count.index)
   vpc_id = aws_vpc.main_vpc.id
+  availability_zone = local.availability_zone_names[count.index]
+
   tags = {
     Name = "${var.prefix}-Public-Subnet-${count.index + 1}"
   }
@@ -40,6 +34,8 @@ resource "aws_subnet" "private_subnets" {
 
   cidr_block = cidrsubnet(var.vpc_cidr, 4, count.index + local.az_number)
   vpc_id = aws_vpc.main_vpc.id
+  availability_zone = local.availability_zone_names[count.index]
+
   tags = {
     Name = "${var.prefix}-Private-Subnet-${count.index + 1}"
   }
