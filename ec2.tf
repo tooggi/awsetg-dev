@@ -59,7 +59,7 @@ resource "aws_instance" "jenkins" {
 
   subnet_id = aws_subnet.public_subnets[0].id
   vpc_security_group_ids = [aws_security_group.allow_web_ssh.id]
-  key_name = "dev-awsetg"
+  key_name = var.key_pair
 
   tags = {
     Name = "${var.prefix}-EC2"
