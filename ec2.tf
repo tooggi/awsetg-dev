@@ -1,14 +1,9 @@
-data "aws_ami" "aws_linux_2" {
-  owners = ["amazon"]
+data "aws_ami" "amazon_linux_2" {
+  owners      = ["amazon"]
   most_recent = true
 
   filter {
-    name = "name"
-    values = []
-  }
-
-  filter {
-    name = "name"
+    name   = "name"
     values = ["amzn2-ami-hvm*"]
   }
 
@@ -23,6 +18,13 @@ data "aws_ami" "aws_linux_2" {
   }
 }
 
-output "amazon_ami" {
-  value = data.aws_ami.aws_linux_2.name
+resource "aws_instance" "jenkins" {
+  ami = data.aws_ami.amazon_linux_2.id
+  instance_type = "t2.micro"
+
+  subnet_id = aws_subnet.public_subnets[0].id
+
+  tags = {
+    Name = "${var.prefix}-EC2"
+  }
 }
