@@ -18,6 +18,7 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
+
 resource "aws_security_group" "allow_web_ssh" {
   name = "allow_web_ssh"
   description = "Allow Web and SSH traffic"
@@ -58,6 +59,7 @@ resource "aws_instance" "jenkins" {
 
   subnet_id = aws_subnet.public_subnets[0].id
   vpc_security_group_ids = [aws_security_group.allow_web_ssh.id]
+  key_name = "dev-awsetg"
 
   tags = {
     Name = "${var.prefix}-EC2"
