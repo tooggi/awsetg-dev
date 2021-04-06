@@ -82,29 +82,29 @@ resource "aws_route" "public_igw_route" {
   gateway_id = aws_internet_gateway.main_igw.id
 }
 
-//// NAT config for Private Subnets
-//resource "aws_eip" "nat_eip" {
-//  vpc = true
-//
-//  tags = {
-//    Name = "${var.prefix}-Main-EIP"
-//  }
-//  depends_on = [aws_internet_gateway.main_igw]
-//}
-//
-//resource "aws_nat_gateway" "nat_gw" {
-//  allocation_id = aws_eip.nat_eip.id
-//  subnet_id = aws_subnet.public_subnets[0].id
-//
-//  tags = {
-//    Name = "${var.prefix}-Main-NAT"
-//  }
-//
-//  depends_on = [aws_internet_gateway.main_igw]
-//}
-//
-//resource "aws_route" "nat_gw_route" {
-//  route_table_id = aws_route_table.private_route_table.id
-//  destination_cidr_block = "0.0.0.0/0"
-//  nat_gateway_id = aws_nat_gateway.nat_gw.id
-//}
+// NAT config for Private Subnets
+resource "aws_eip" "nat_eip" {
+  vpc = true
+
+  tags = {
+    Name = "${var.prefix}-Main-EIP"
+  }
+  depends_on = [aws_internet_gateway.main_igw]
+}
+
+resource "aws_nat_gateway" "nat_gw" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id = aws_subnet.public_subnets[0].id
+
+  tags = {
+    Name = "${var.prefix}-Main-NAT"
+  }
+
+  depends_on = [aws_internet_gateway.main_igw]
+}
+
+resource "aws_route" "nat_gw_route" {
+  route_table_id = aws_route_table.private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.nat_gw.id
+}
