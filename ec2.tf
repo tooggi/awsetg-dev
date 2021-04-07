@@ -25,7 +25,7 @@ resource "aws_security_group" "allow_web_ssh" {
   vpc_id = aws_vpc.main_vpc.id
 
   dynamic "ingress" {
-    for_each = ["22", "80", "443"]
+    for_each = ["22", "80", "8080", "443"]
     content {
       from_port = ingress.value
       to_port = ingress.value
