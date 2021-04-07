@@ -18,7 +18,6 @@ data "aws_ami" "amazon_linux_2" {
   }
 }
 
-
 resource "aws_security_group" "allow_web_ssh" {
   name = "allow_web_ssh"
   description = "Allow Web and SSH traffic"
